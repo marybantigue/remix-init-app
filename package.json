@@ -1,5 +1,5 @@
 {
-  "name": "msb-remix",
+  "name": "remix-init-app",
   "private": true,
   "sideEffects": false,
   "type": "module",
