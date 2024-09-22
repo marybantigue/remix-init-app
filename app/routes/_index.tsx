@@ -1,4 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
+import { Button } from "~/components/ui/button";
+import { ModeToggle } from "~/components/mode-toggle";
 
 export const meta: MetaFunction = () => {
   return [
@@ -15,6 +17,8 @@ export default function Index() {
           <h1 className="leading text-2xl font-bold text-gray-800 dark:text-gray-100">
             Welcome to <span className="sr-only">Remix</span>
           </h1>
+          <Button>Click me</Button>
+          <ModeToggle />
           <div className="h-[144px] w-[434px]">
             <img
               src="/logo-light.png"
