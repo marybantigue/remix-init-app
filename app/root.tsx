@@ -50,7 +50,7 @@ export function App() {
         <PreventFlashOnWrongTheme ssrTheme={Boolean(data.theme)} />
         <Links />
       </head>
-      <body>
+      <body className="transition-colors min-h-screen">
         <Outlet />
         <ScrollRestoration />
         <Scripts />
