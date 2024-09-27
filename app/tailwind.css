@@ -76,3 +76,28 @@ body {
     @apply bg-background text-foreground;
   }
 }
+.sidebar {
+  @apply overflow-hidden transition-all duration-300 ease-in-out;
+
+  @apply bg-slate-50 dark:bg-gray-800;
+}
+.sidebar.open {
+  @apply w-96;
+  /* On mobile open at cacl(100%-50px) */
+}
+
+.sidebar.closed {
+  @apply w-16;
+}
+
+@media (max-width: 640px) {
+  .sidebar {
+    @apply absolute h-full z-50;
+  }
+  .sidebar.open {
+    @apply w-full;
+  }
+  .sidebar.closed {
+    width: 0;
+  }
+}

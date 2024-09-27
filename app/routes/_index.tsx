@@ -1,7 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
 import { ModeToggle } from "~/components/mode-toggle";
 import { Link } from "@remix-run/react";
-
+import Header from "~/components/header";
 export const meta: MetaFunction = () => {
   return [
     { title: "New Remix App" },
@@ -17,6 +17,7 @@ export default function Index() {
           <h1 className="leading text-2xl font-bold text-gray-800 dark:text-gray-100">
             Welcome to <span className="sr-only">Remix</span>
           </h1>
+          <Header />
           <Link to="/login">Login</Link>
           <ModeToggle />
           <div className="h-[144px] w-[434px]">

@@ -1,14 +1,10 @@
 import { json, type ActionFunctionArgs } from "@remix-run/node";
-
 import { useForm } from "@conform-to/react";
-
 import { parseWithZod } from "@conform-to/zod";
 import { Form, useActionData } from "@remix-run/react";
-
 import { z } from "zod";
 import { authenticator } from "~/services/auth.server";
 import { AuthorizationError } from "remix-auth";
-
 import GuestLayout from "~/components/layouts/guest";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
@@ -26,6 +22,7 @@ const schema = z.object({
 // dashboard if it is or return null if it's not
 export async function loader({ request }: LoaderFunctionArgs) {
   // If the user is already authenticated redirect to /dashboard directly
+
   return await authenticator.isAuthenticated(request, {
     successRedirect: "/dashboard",
   });
@@ -66,6 +63,7 @@ ActionFunctionArgs) {
     // Because redirects work by throwing a Response, you need to check if the
     // caught error is a response and return it or throw it again
     if (error instanceof Response) {
+      throw error;
       return {
         ...genericErrorResponse,
         error: {

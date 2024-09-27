@@ -3,7 +3,7 @@ import { Authenticator, AuthorizationError } from "remix-auth";
 import { sessionStorage } from "~/services/session.server";
 import { FormStrategy } from "remix-auth-form";
 import axios, { isAxiosError } from "axios";
-interface User {
+export interface User {
   username: string;
   email: string;
   id: string | number;

@@ -15,6 +15,10 @@ import {
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { themeSessionResolver } from "~/sessions.server";
 import stylesheet from "~/tailwind.css?url";
+import { getSession } from "~/services/session.server";
+import { SidebarProvider } from "~/providers/SidebarProvider";
+import { UserProvider } from "~/providers/UserProvider";
+import { authenticator } from "./services/auth.server";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -33,8 +37,13 @@ export const links: LinksFunction = () => [
 // Return the theme from the session storage using the loader
 export async function loader({ request }: LoaderFunctionArgs) {
   const { getTheme } = await themeSessionResolver(request);
+  const session = await getSession(request.headers.get("Cookie"));
+  const isOpen = session.get("isOpen") ?? true; // Default to false if not set
+  const user = await authenticator.isAuthenticated(request);
   return {
     theme: getTheme(),
+    isOpen,
+    user: user ?? null,
   };
 }
 
@@ -62,8 +71,15 @@ export function App() {
 export default function AppWithProviders() {
   const data = useLoaderData<typeof loader>();
   return (
-    <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
-      <App />
-    </ThemeProvider>
+    <UserProvider user={data.user}>
+      <ThemeProvider
+        specifiedTheme={data.theme}
+        themeAction="/action/set-theme"
+      >
+        <SidebarProvider initialIsOpen={data.isOpen}>
+          <App />
+        </SidebarProvider>
+      </ThemeProvider>
+    </UserProvider>
   );
 }
