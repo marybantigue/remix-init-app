@@ -19,6 +19,7 @@ import { getSession } from "~/services/session.server";
 import { SidebarProvider } from "~/providers/SidebarProvider";
 import { UserProvider } from "~/providers/UserProvider";
 import { authenticator } from "./services/auth.server";
+import { GlobalDataProvider } from "~/providers/GlobalDataProvider";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -40,10 +41,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
   const isOpen = session.get("isOpen") ?? true; // Default to false if not set
   const user = await authenticator.isAuthenticated(request);
+  const appName = process.env.APP_NAME ?? "Remix App";
   return {
     theme: getTheme(),
     isOpen,
     user: user ?? null,
+    appName,
   };
 }
 
@@ -71,15 +74,17 @@ export function App() {
 export default function AppWithProviders() {
   const data = useLoaderData<typeof loader>();
   return (
-    <UserProvider user={data.user}>
-      <ThemeProvider
-        specifiedTheme={data.theme}
-        themeAction="/action/set-theme"
-      >
-        <SidebarProvider initialIsOpen={data.isOpen}>
-          <App />
-        </SidebarProvider>
-      </ThemeProvider>
-    </UserProvider>
+    <GlobalDataProvider appName={data.appName}>
+      <UserProvider user={data.user}>
+        <ThemeProvider
+          specifiedTheme={data.theme}
+          themeAction="/action/set-theme"
+        >
+          <SidebarProvider initialIsOpen={data.isOpen}>
+            <App />
+          </SidebarProvider>
+        </ThemeProvider>
+      </UserProvider>
+    </GlobalDataProvider>
   );
 }

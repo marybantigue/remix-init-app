@@ -82,12 +82,25 @@ body {
   @apply bg-slate-50 dark:bg-gray-800;
 }
 .sidebar.open {
-  @apply w-96;
-  /* On mobile open at cacl(100%-50px) */
+  @apply w-80;
 }
 
 .sidebar.closed {
-  @apply w-16;
+  @apply w-20;
+}
+.sidebar .nav-label {
+  @apply text-left grow overflow-hidden transition-all duration-300 ease-in-out;
+}
+.sidebar.closed .nav-label {
+  @apply w-0 grow-0 opacity-0 hidden;
+}
+.sidebar .nav-icon {
+  @apply transition-all duration-100 ease-in-out grow-0;
+  width: 24px;
+  height: 24px;
+}
+.sidebar.closed .nav-icon {
+  @apply grow;
 }
 
 @media (max-width: 640px) {
